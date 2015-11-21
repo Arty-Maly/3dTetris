@@ -1,37 +1,734 @@
+
+
+
+
 function Game_Piece() {
 
-			this.piece = new Physijs.BoxMesh(new THREE.BoxGeometry(4, 4, 4), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+			this.piece = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
 			this.piece.position.x = 0;
     		this.piece.position.y = 10;
     		this.piece.position.z = 8;
-    		this.piece.name = "game";
+    		this.piece.__dirtyRotation=true;
+    		this.piece.__dirtyPosition=true;
 }
 
 	Game_Piece.prototype={
 		constructor:Game_Piece,
 
-		create_new_piece: function() {
-			this.piece = new Physijs.BoxMesh(new THREE.BoxGeometry(4, 4, 4), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
-			this.piece.position.x = 0;
-    		this.piece.position.y = 10;
-    		this.piece.position.z = 8;
-    		this.piece.name = "game";
+		create_new_piece: function(world) {
+
+		//create_T_piece(world);
     		
     		
     		// Game_World.prototype.add.call(this.piece);
+		}
+
+
+		,
+//different pieces starting below:
+		TPiece: function(world, rot){
+
+				var basepositionx, basepositiony, basepositionz;
+
+	switch(rot) {
+				case 0: basepositionx = 0;
+    					basepositiony = 10;
+    					basepositionz = 8;
+    					
+    			break;
+
+    			case 1: basepositionx = -8;
+    					basepositiony = 10;
+    					basepositionz = 0;
+    					
+    			break;
+
+    			case 2: basepositionx = 0;
+    					basepositiony = 10;
+    					basepositionz = -8;
+    					
+    			break;
+
+    			case 3: basepositionx = 8;
+    					basepositiony = 10;
+    					basepositionz = 0;
+    			
+    			break;
+			
+    		}
+	topleftbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    topleftbox.position.x = basepositionx-1;
+    topleftbox.position.y = basepositiony+1;
+    topleftbox.position.z = basepositionz;
+
+	topmiddlebox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+	topmiddlebox.position.x = basepositionx;
+    topmiddlebox.position.y = basepositiony+1;
+    topmiddlebox.position.z = basepositionz;
+
+    toprightbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    toprightbox.position.x = basepositionx+1;
+    toprightbox.position.y = basepositiony+1;
+    toprightbox.position.z = basepositionz;
+
+    middlebox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+	middlebox.position.x = basepositionx;
+    middlebox.position.y = basepositiony;
+    middlebox.position.z = basepositionz;
+
+    lowbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+	lowbox.position.x = basepositionx;
+    lowbox.position.y = basepositiony-1;
+    lowbox.position.z = basepositionz;
+
+    world.add(topleftbox);
+    world.add(topmiddlebox);
+    world.add(toprightbox);
+    world.add(middlebox);
+    world.add(lowbox);
+
+    var tltmhigh = new Physijs.PointConstraint(
+    topleftbox, // First object to be constrained
+    topmiddlebox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx-0.5, basepositiony+1.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	var tltmlow = new Physijs.PointConstraint(
+    topleftbox, // First object to be constrained
+    topmiddlebox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx - 0.5, basepositiony +0.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	world.addConstraint( tltmhigh );
+	world.addConstraint( tltmlow );
+
+
+    var trtmhigh = new Physijs.PointConstraint(
+    toprightbox, // First object to be constrained
+    topmiddlebox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx+0.5, basepositiony+1.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	var trtmlow = new Physijs.PointConstraint(
+    toprightbox, // First object to be constrained
+    topmiddlebox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx+0.5, basepositionx+0.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	world.addConstraint( trtmhigh );
+	world.addConstraint( trtmlow );
+
+	var mtmright = new Physijs.PointConstraint(
+    middlebox, // First object to be constrained
+    topmiddlebox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx+0.1, basepositiony+0.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	var mtmleft = new Physijs.PointConstraint(
+    middlebox, // First object to be constrained
+    topmiddlebox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx-0.1, basepositiony+0.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	world.addConstraint( mtmright );
+	world.addConstraint( mtmleft );
+
+    var mlmright = new Physijs.PointConstraint(
+    middlebox, // First object to be constrained
+    lowbox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx+0.1, basepositiony-0.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	var mlmleft = new Physijs.PointConstraint(
+    middlebox, // First object to be constrained
+    lowbox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx-0.1, basepositiony-0.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	world.addConstraint( mlmright );
+	world.addConstraint( mlmleft );
+
+	this.piece = [topmiddlebox, topleftbox, toprightbox, middlebox, lowbox];
+
 		},
 
+	IPiece: function (world, rot){
+
+			var basepositionx, basepositiony, basepositionz;
+
+	switch(rot) {
+				case 0: basepositionx = 0;
+    					basepositiony = 10;
+    					basepositionz = 8;
+    					
+    			break;
+
+    			case 1: basepositionx = -8;
+    					basepositiony = 10;
+    					basepositionz = 0;
+    					
+    			break;
+
+    			case 2: basepositionx = 0;
+    					basepositiony = 10;
+    					basepositionz = -8;
+    					
+    			break;
+
+    			case 3: basepositionx = 8;
+    					basepositiony = 10;
+    					basepositionz = 0;
+    			
+    			break;
+			
+    		}
+
+	topbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    topbox.position.x = basepositionx;
+    topbox.position.y = basepositiony+1;
+    topbox.position.z = basepositionz;
+
+	topmiddlebox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+	topmiddlebox.position.x = basepositionx;
+    topmiddlebox.position.y = basepositiony;
+    topmiddlebox.position.z = basepositionz;
+
+    botmiddlebox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+	botmiddlebox.position.x = basepositionx;
+    botmiddlebox.position.y = basepositiony-1;
+    botmiddlebox.position.z = basepositionz;
+
+    botbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    botbox.position.x = basepositionx;
+    botbox.position.y = basepositiony-2;
+    botbox.position.z = basepositionz;
+
+
+
+    world.add(topbox);
+    world.add(topmiddlebox);
+    world.add(botbox);
+    world.add(botmiddlebox);
+
+
+   var ttmright = new Physijs.PointConstraint(
+    topbox, // First object to be constrained
+    topmiddlebox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx+0.1, basepositiony+0.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	var ttmleft = new Physijs.PointConstraint(
+    topbox, // First object to be constrained
+    topmiddlebox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx-0.1, basepositiony+0.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	world.addConstraint( ttmright );
+	world.addConstraint( ttmleft );
+
+	var tmbmright = new Physijs.PointConstraint(
+    botmiddlebox, // First object to be constrained
+    topmiddlebox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx+0.1, basepositiony-0.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	var tmbmleft = new Physijs.PointConstraint(
+    botmiddlebox, // First object to be constrained
+    topmiddlebox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx-0.1, basepositiony-0.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	world.addConstraint( tmbmright );
+	world.addConstraint( tmbmleft );
+
+	var bbmright = new Physijs.PointConstraint(
+    botmiddlebox, // First object to be constrained
+    botbox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx+0.1, basepositiony-1.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	var bbmleft = new Physijs.PointConstraint(
+    botmiddlebox, // First object to be constrained
+    botbox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx-0.1, basepositiony-1.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	world.addConstraint( bbmright );
+	world.addConstraint( bbmleft );
+    
+	this.piece=[topbox, topmiddlebox, botbox, botmiddlebox];
+
+}
+
+		,
+ZPiece: function (world, rot){
+
+		var basepositionx, basepositiony, basepositionz;
+
+	switch(rot) {
+				case 0: basepositionx = 0;
+    					basepositiony = 10;
+    					basepositionz = 8;
+    					
+    			break;
+
+    			case 1: basepositionx = -8;
+    					basepositiony = 10;
+    					basepositionz = 0;
+    					
+    			break;
+
+    			case 2: basepositionx = 0;
+    					basepositiony = 10;
+    					basepositionz = -8;
+    					
+    			break;
+
+    			case 3: basepositionx = 8;
+    					basepositiony = 10;
+    					basepositionz = 0;
+    			
+    			break;
+			
+    		}
+
+	topleftbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    topleftbox.position.x = basepositionx-1;
+    topleftbox.position.y = basepositiony+1;
+    topleftbox.position.z = basepositionz;
+
+	topmiddlebox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+	topmiddlebox.position.x = basepositionx;
+    topmiddlebox.position.y = basepositiony+1;
+    topmiddlebox.position.z = basepositionz;
+
+    botrightbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    botrightbox.position.x = basepositionx+1;
+    botrightbox.position.y = basepositiony;
+    botrightbox.position.z = basepositionz;
+
+    botmiddlebox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+	botmiddlebox.position.x = basepositionx;
+    botmiddlebox.position.y = basepositiony;
+    botmiddlebox.position.z = basepositionz;
+
+
+
+    world.add(topleftbox);
+    world.add(topmiddlebox);
+    world.add(botrightbox);
+    world.add(botmiddlebox);
+
+
+    var tltmhigh = new Physijs.PointConstraint(
+    topleftbox, // First object to be constrained
+    topmiddlebox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx-0.5, basepositiony+1.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	var tltmlow = new Physijs.PointConstraint(
+    topleftbox, // First object to be constrained
+    topmiddlebox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx-0.5, basepositiony+0.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	world.addConstraint( tltmhigh );
+	world.addConstraint( tltmlow );
+
+
+    var brbmhigh = new Physijs.PointConstraint(
+    botrightbox, // First object to be constrained
+    botmiddlebox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx+0.5, basepositiony+0.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	var brbmlow = new Physijs.PointConstraint(
+    botrightbox, // First object to be constrained
+    botmiddlebox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx+0.5, basepositiony-0.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	world.addConstraint( brbmhigh );
+	world.addConstraint( brbmlow );
+
+	var mtmbright = new Physijs.PointConstraint(
+    botmiddlebox, // First object to be constrained
+    topmiddlebox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx+0.1, basepositiony+0.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	var mtmbleft = new Physijs.PointConstraint(
+    botmiddlebox, // First object to be constrained
+    topmiddlebox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx-0.1, basepositiony+0.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	world.addConstraint( mtmbright );
+	world.addConstraint( mtmbleft );
+
+   this.piece=[topleftbox, topmiddlebox, botrightbox, botmiddlebox];
+
+}
+
+,
+
+CubePiece: function (world, rot){
+
+		var basepositionx, basepositiony, basepositionz;
+
+	switch(rot) {
+				case 0: basepositionx = 0;
+    					basepositiony = 10;
+    					basepositionz = 8;
+    					
+    			break;
+
+    			case 1: basepositionx = -8;
+    					basepositiony = 10;
+    					basepositionz = 0;
+    					
+    			break;
+
+    			case 2: basepositionx = 0;
+    					basepositiony = 10;
+    					basepositionz = -8;
+    					
+    			break;
+
+    			case 3: basepositionx = 8;
+    					basepositiony = 10;
+    					basepositionz = 0;
+    			
+    			break;
+			
+    		}
+
+	topleftbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    topleftbox.position.x = basepositionx-1;
+    topleftbox.position.y = basepositiony+1;
+    topleftbox.position.z = basepositionz;
+
+	botleftbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+	botleftbox.position.x = basepositionx-1;
+    botleftbox.position.y = basepositiony;
+    botleftbox.position.z = basepositionz;
+
+    toprightbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    toprightbox.position.x = basepositionx;
+    toprightbox.position.y = basepositiony+1;
+    toprightbox.position.z = basepositionz;
+
+    botrightbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+	botrightbox.position.x = basepositionx;
+    botrightbox.position.y = basepositiony;
+    botrightbox.position.z = basepositionz;
+
+
+    world.add(topleftbox);
+    world.add(botrightbox);
+    world.add(toprightbox);
+    world.add(botleftbox);
+
+    this.piece=[topleftbox, botrightbox, toprightbox, botleftbox];
+
+    var trtlhigh = new Physijs.PointConstraint(
+    topleftbox, // First object to be constrained
+    toprightbox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx-0.5, basepositiony+1.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	var trtllow = new Physijs.PointConstraint(
+    topleftbox, // First object to be constrained
+    toprightbox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx-0.5, basepositiony+0.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	world.addConstraint( trtlhigh );
+	world.addConstraint( trtllow );
+
+
+    var trbrleft = new Physijs.PointConstraint(
+    toprightbox, // First object to be constrained
+    botrightbox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx-0.1, basepositiony+0.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	var trbrright = new Physijs.PointConstraint(
+    toprightbox, // First object to be constrained
+    botrightbox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx+0.2, basepositiony+0.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	world.addConstraint( trbrleft );
+	world.addConstraint( trbrright );
+
+	var tlblright = new Physijs.PointConstraint(
+    topleftbox, // First object to be constrained
+    botleftbox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx-0.9, basepositiony+0.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	var tlblleft = new Physijs.PointConstraint(
+    topleftbox, // First object to be constrained
+    botleftbox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx-1.1, basepositiony+0.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	world.addConstraint( tlblright );
+	world.addConstraint( tlblleft );
+
+
+}
+
+,
+LTPiece: function (world, rot){
+
+		var basepositionx, basepositiony, basepositionz;
+
+	switch(rot) {
+				case 0: basepositionx = 0;
+    					basepositiony = 10;
+    					basepositionz = 8;
+    					
+    			break;
+
+    			case 1: basepositionx = -8;
+    					basepositiony = 10;
+    					basepositionz = 0;
+    					
+    			break;
+
+    			case 2: basepositionx = 0;
+    					basepositiony = 10;
+    					basepositionz = -8;
+    					
+    			break;
+
+    			case 3: basepositionx = 8;
+    					basepositiony = 10;
+    					basepositionz = 0;
+    			
+    			break;
+			
+    		}
+
+	topleftbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    topleftbox.position.x = basepositionx-1;
+    topleftbox.position.y = basepositiony+1;
+    topleftbox.position.z = basepositionz;
+
+	topmiddlebox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+	topmiddlebox.position.x = basepositionx;
+    topmiddlebox.position.y = basepositiony+1;
+    topmiddlebox.position.z = basepositionz;
+
+
+    middlebox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+	middlebox.position.x = basepositionx;
+    middlebox.position.y = basepositiony;
+    middlebox.position.z = basepositionz;
+
+    lowbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+	lowbox.position.x = basepositionx;
+    lowbox.position.y = basepositiony-1;
+    lowbox.position.z = basepositionz;
+
+    world.add(topleftbox);
+    world.add(topmiddlebox);
+    world.add(middlebox);
+    world.add(lowbox);
+
+    this.piece=[topleftbox, topmiddlebox, middlebox, lowbox];
+
+    var tltmhigh = new Physijs.PointConstraint(
+    topleftbox, // First object to be constrained
+    topmiddlebox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx-0.5, basepositiony+1.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	var tltmlow = new Physijs.PointConstraint(
+    topleftbox, // First object to be constrained
+    topmiddlebox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx-0.5, basepositionx+0.5, basepositionz) // point in the scene to apply the constraint
+	);
+
+	world.addConstraint( tltmhigh );
+	world.addConstraint( tltmlow );
+
+
+	var mtmright = new Physijs.PointConstraint(
+    middlebox, // First object to be constrained
+    topmiddlebox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx+0.1, basepositiony+0.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	var mtmleft = new Physijs.PointConstraint(
+    middlebox, // First object to be constrained
+    topmiddlebox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx-0.1, basepositionx+0.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	world.addConstraint( mtmright );
+	world.addConstraint( mtmleft );
+
+    var mlmright = new Physijs.PointConstraint(
+    middlebox, // First object to be constrained
+    lowbox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx+0.1, basepositiony-0.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	var mlmleft = new Physijs.PointConstraint(
+    middlebox, // First object to be constrained
+    lowbox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx-0.1, basepositiony-0.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	world.addConstraint( mlmright );
+	world.addConstraint( mlmleft );
+
+
+
+}
+,
+RTPiece: function (world, rot){
+
+	var basepositionx, basepositiony, basepositionz;
+
+	switch(rot) {
+				case 0: basepositionx = 0;
+    					basepositiony = 10;
+    					basepositionz = 8;
+    					
+    			break;
+
+    			case 1: basepositionx = -8;
+    					basepositiony = 10;
+    					basepositionz = 0;
+    					
+    			break;
+
+    			case 2: basepositionx = 0;
+    					basepositiony = 10;
+    					basepositionz = -8;
+    					
+    			break;
+
+    			case 3: basepositionx = 8;
+    					basepositiony = 10;
+    					basepositionz = 0;
+    			
+    			break;
+			
+    		}
+
+
+	topmiddlebox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+	topmiddlebox.position.x = basepositionx;
+    topmiddlebox.position.y = basepositiony+1;
+    topmiddlebox.position.z = basepositionz;
+
+    toprightbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    toprightbox.position.x = basepositionx+1;
+    toprightbox.position.y = basepositiony +1;
+    toprightbox.position.z = basepositionz;
+
+    middlebox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+	middlebox.position.x = basepositionx;
+    middlebox.position.y = basepositiony;
+    middlebox.position.z = basepositionz;
+
+    lowbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+	lowbox.position.x = basepositionx;
+    lowbox.position.y = basepositiony-1;
+    lowbox.position.z = basepositionz;
+
+    world.add(topmiddlebox);
+    world.add(toprightbox);
+    world.add(middlebox);
+    world.add(lowbox);
+
+    this.piece = [topmiddlebox, toprightbox, middlebox, lowbox];
+
+    var trtmhigh = new Physijs.PointConstraint(
+    toprightbox, // First object to be constrained
+    topmiddlebox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx+0.5, basepositiony+1.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	var trtmlow = new Physijs.PointConstraint(
+    toprightbox, // First object to be constrained
+    topmiddlebox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx +0.5, basepositiony +0.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	world.addConstraint( trtmhigh );
+	world.addConstraint( trtmlow );
+
+	var mtmright = new Physijs.PointConstraint(
+    middlebox, // First object to be constrained
+    topmiddlebox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx+0.1, basepositiony +0.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	var mtmleft = new Physijs.PointConstraint(
+    middlebox, // First object to be constrained
+    topmiddlebox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx -0.1, basepositiony +0.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	world.addConstraint( mtmright );
+	world.addConstraint( mtmleft );
+
+    var mlmright = new Physijs.PointConstraint(
+    middlebox, // First object to be constrained
+    lowbox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx + 0.1, basepositiony -0.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	var mlmleft = new Physijs.PointConstraint(
+    middlebox, // First object to be constrained
+    lowbox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
+    new THREE.Vector3( basepositionx -0.1, basepositiony-0.5, basepositionz ) // point in the scene to apply the constraint
+	);
+
+	world.addConstraint( mlmright );
+	world.addConstraint( mlmleft );
+
+
+}
+,
 		setMass: function(mass) {
-			this.piece.mass = mass || 0;
+			for(var i =0; i<this.piece.length; i++){
+				this.piece[i].mass = mass || 0;
+			}
+			
 		},
 
 		setLinearVelocity: function(velocity) {
-			
-			this.piece.setLinearVelocity(velocity || {x: 0, y: -5, z: 0} );
+			for(var i =0; i<this.piece.length; i++){
+			this.piece[i].setLinearVelocity(velocity || {x: 0, y: -5, z: 0} );
+			}
 		},
 
-		get: function() {
-			return this.piece;
+		get: function(world, rot) {
+			var self=this;
+			var num = Math.floor((Math.random() * 6));
+			switch (num){
+				case 0: self.LTPiece(world, rot);
+						break;
+				case 1: self.RTPiece(world, rot);
+						break;
+				case 2: self.TPiece(world, rot);
+						break;
+				case 3: self.IPiece(world, rot);
+						break;
+				case 4: self.ZPiece(world, rot);
+						break;
+				case 5: self.CubePiece(world, rot);
+						break;
+			}
+			
+			//return this.piece;
 		},
 
 		rotate: function(rot) {
@@ -66,45 +763,47 @@ function Game_Piece() {
 
 		applyImpulse: function(direction, rot) {
 
-			var rotationx;
-			var rotationy;
-			var rotationz;
+			var movement=1.1;
+			if(direction=="left"){
+				movement=-1.1;
+			};
 
 			switch(rot) {
-				case 0: rotationx = 60050;
-						rotationy = 0;
-						rotationz = 0;
+				case 0: 
+						for (var i=0; i<game_piece.piece.length; i++)
+						{
+						game_piece.piece[i].position.x+=movement;
+						game_piece.piece[i].__dirtyPosition=true;
+						}
+  					
+    			break;
+
+    			case 1: for (var i=0; i<game_piece.piece.length; i++)
+						{
+						game_piece.piece[i].position.z+=movement;
+						game_piece.piece[i].__dirtyPosition=true;
+						}
     					
     			break;
 
-    			case 1: rotationx = 0;
-						rotationy = 0;
-						rotationz = 60050;
+    			case 2: for (var i=0; i<game_piece.piece.length; i++)
+						{
+						game_piece.piece[i].position.x-=movement;
+						game_piece.piece[i].__dirtyPosition=true;
+						}
     					
     			break;
 
-    			case 2: rotationx = -60050;
-						rotationy = 0;
-						rotationz = 0;
-    					
-    			break;
-
-    			case 3: rotationx = 0;
-						rotationy = 0;
-						rotationz = -60050;
+    			case 3: for (var i=0; i<game_piece.piece.length; i++)
+						{
+						game_piece.piece[i].position.z+=movement;
+						game_piece.piece[i].__dirtyPosition=true;
+						}
     			
     			break;
 
     		}
 
-			var rotation_matrix = new THREE.Matrix4().extractRotation(this.piece.matrix);
-			var right_force_vector = new THREE.Vector3(rotationx,rotationy,rotationz).applyMatrix4(rotation_matrix);
-			var left_force_vector = new THREE.Vector3(-1*rotationx,-1*rotationy,-1*rotationz).applyMatrix4(rotation_matrix);
-			if (direction == "left") {
-				this.piece.applyCentralImpulse(left_force_vector);
-			} else {
-				this.piece.applyCentralImpulse(right_force_vector)
-			}
 		}
 }
 
@@ -159,6 +858,11 @@ function Game_World() {
             requestAnimationFrame(this.render.bind(this));
             this.renderer.render(this.scene, this.camera);
             this.floor.__dirtyRotation = true;
+            //this.scene.getObjectByName(currentpiece).position.x+=.01;
+            //this.scene.getObjectByName(currentpiece).__dirtyPosition=true;
+
+            //obj.__dirtyPosition=true;
+            //this.game_piece.piece.__dirtyPosition=true;
             TWEEN.update();
         },
 
@@ -180,23 +884,34 @@ function Game_World() {
 
 
 window.onload = function init() {
-
+	var rot = 0;
 	game_piece = new Game_Piece();
+
 	isPaused = false;
     world = new Game_World();
     world.setYGravity();
     world.setRenderer();
     world.attachRenderer();
-   
-  	world.add(game_piece.get());
+    game_piece.get(world, rot);
+   	//game_piece.LTPiece(world);
+  	//world.add(game_piece.get());
   	game_piece.setLinearVelocity();
-	world.render()
+
+
+	//TPiece(world);
+
+
+	world.render();
 
 	var game_loop = true;
 	var new_piece = true;
-	var rot = 0;
 	
-	game_piece.get().addEventListener('collision', collisions); 
+
+	// for(var i=0; i<game_piece.piece.length; i++){
+	// 	game_piece.piece[i].addEventListener('collision', collisions); 
+	// }
+	
+	
 	
 	function collisions(other_object, linear_velocity, angular_velocity) {
 		rot+=1;
@@ -205,13 +920,16 @@ window.onload = function init() {
 		
 		game_piece.setMass();
 		game_piece.setLinearVelocity({x: 0, y: 0, z: 0});
-		game_piece.get().removeEventListener('collision', collisions);
-		console.log(game_piece.get().removeEventListener('collision', collisions));
+		for(var i=0; i<game_piece.piece.length; i++){
+		game_piece.piece[i].removeEventListener('collision', collisions);
+		}
+		//console.log(game_piece.get().removeEventListener('collision', collisions));
 
-		game_piece.create_new_piece();
-		game_piece.rotate(rot);
-		
-		world.add(game_piece.get());
+		currentpiece+=1;
+		//game_piece.create_new_piece(world);
+		//game_piece.rotate(rot);
+		game_piece.get(world, rot);
+		//world.add(game_piece.get());
 
 		game_piece.setLinearVelocity();
 		var rad90 = Math.PI * .5;
@@ -240,8 +958,12 @@ window.onload = function init() {
 
 		 case 68: 
 					if (keydown == 0) {
+						//world.pause();
+						
 						game_piece.applyImpulse("right",rot);
-						setTimeout(function() { game_piece.setLinearVelocity({x: 0, y: -5, z: 0});}, 30);
+						// world.scene.getObjectByName(currentpiece).__dirtyPosition=true;
+						// game_piece.piece.position.setZ(z+2);
+
 						keydown = 1;
 					}		 		
 		 		
@@ -250,7 +972,7 @@ window.onload = function init() {
 		 case 65: 
 		 		if (keydown == 0) {
 		 		game_piece.applyImpulse("left",rot);
-		 		setTimeout(function() { game_piece.setLinearVelocity({x: 0, y: -5, z: 0});}, 30);
+		 		//setTimeout(function() { game_piece.setLinearVelocity({x: 0, y: -5, z: 0});}, 30);
 		 		keydown =1;
 		 		}  
 		 		break;
