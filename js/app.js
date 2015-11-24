@@ -831,27 +831,23 @@ RTPiece: function (world, rot){
 		rotate: function(rot) {
 
 			switch(rot) {
-				case 0: this.piece.position.x = 0;
-    					this.piece.position.y = 10;
-    					this.piece.position.z = 8;
+				case 0: game_piece.piece[0].rotation.z+=1.57;
+                        game_piece.piece[0].__dirtyRotation=true;
     					
     			break;
 
-    			case 1: this.piece.position.x = -8;
-    					this.piece.position.y = 10;
-    					this.piece.position.z = 0;
+    			case 1: game_piece.piece[0].rotation.x+=1.57;
+                        game_piece.piece[0].__dirtyRotation=true;
     					
     			break;
 
-    			case 2: this.piece.position.x = 0;
-    					this.piece.position.y = 10;
-    					this.piece.position.z = -8;
+    			case 2: game_piece.piece[0].rotation.z-=1.57;
+                        game_piece.piece[0].__dirtyRotation=true;
     					
     			break;
 
-    			case 3: this.piece.position.x = 8;
-    					this.piece.position.y = 10;
-    					this.piece.position.z = 0;
+    			case 3: game_piece.piece[0].rotation.x-=1.57;
+                        game_piece.piece[0].__dirtyRotation=true;
     			
     			break;
 			
@@ -1239,7 +1235,10 @@ window.onload = function init() {
 		 		}  
 		 		break;
 
-		 case 82: /*R*/  break;
+		 case 82: /*R*/  
+            game_piece.rotate(rot);
+
+         break;
 		 case 70: /*F*/  break;
 
 		 case 38: /*up*/  break;
