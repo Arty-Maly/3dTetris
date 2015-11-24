@@ -79,27 +79,27 @@ function Game_Piece() {
     			break;
 			
     		}
-	topleftbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+	topleftbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true}, 1.0, 0), 500);
     topleftbox.position.x = basepositionx-(1*xoffset);
     topleftbox.position.y = basepositiony+1;
     topleftbox.position.z = basepositionz-(1*zoffset);
 
-    topmiddlebox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    topmiddlebox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true}, 1.0, 0), 500);
     topmiddlebox.position.x = basepositionx;
     topmiddlebox.position.y = basepositiony+1;
     topmiddlebox.position.z = basepositionz;
 
-    toprightbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    toprightbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true}, 1.0, 0), 500);
     toprightbox.position.x = basepositionx+(1*xoffset);
     toprightbox.position.y = basepositiony+1;
     toprightbox.position.z = basepositionz+(1*zoffset);
 
-    middlebox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    middlebox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true}, 1.0, 0), 500);
     middlebox.position.x = basepositionx;
     middlebox.position.y = basepositiony;
     middlebox.position.z = basepositionz;
 
-    lowbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    lowbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true}, 1.0, 0), 500);
     lowbox.position.x = basepositionx;
     lowbox.position.y = basepositiony-1;
     lowbox.position.z = basepositionz;
@@ -171,12 +171,23 @@ function Game_Piece() {
     toprightbox.active = true; 
     middlebox.active = true;
     lowbox.active = true;
+
+    // this.boundBox1 = new THREE.Box3().setFromObject(topmiddlebox);
+    // this.boundBox2 = new THREE.Box3().setFromObject(topleftbox); 
+    // this.boundBox3 = new THREE.Box3().setFromObject(toprightbox); 
+    // this.boundBox4 = new THREE.Box3().setFromObject(middlebox);
+    // this.boundBox5 = new THREE.Box3().setFromObject(lowbox);
+    // this.boundBoxes = [this.boundBox1, this.boundBox2, this.boundBox3, this.boundBox4, this.boundBox5]
     this.constraints = [tltmhigh, tltmlow, trtmhigh, trtmlow, mtmright, mtmleft, mlmright, mlmleft]
 	this.piece = [topmiddlebox, topleftbox, toprightbox, middlebox, lowbox];
      for (var i=0; i<this.piece.length; i++) {
-        console.log(this.piece[i].active);
+        
      }
 		},
+
+    getBoundBoxes: function() {
+        return this.boundBoxes;
+    },
     setInactive: function() {
         var array = this.getActivePieces();
         for (var i=0; i<array.length; i++) {
@@ -843,9 +854,9 @@ RTPiece: function (world, rot){
 
 		applyImpulse: function(direction, rot) {
 
-			var movement=1.01;
+			var movement=1.02;
 			if(direction=="left"){
-				movement=-1.01;
+				movement=-1.02;
 			};
 
 			switch(rot) {
@@ -876,7 +887,7 @@ RTPiece: function (world, rot){
 
     			case 3: for (var i=0; i<game_piece.piece.length; i++)
 						{
-						game_piece.piece[i].position.z+=movement;
+						game_piece.piece[i].position.z-=movement;
 						game_piece.piece[i].__dirtyPosition=true;
 						}
     			
@@ -929,14 +940,17 @@ function Game_World() {
 
                 for (var j=0; j<11; j++) {
 
-                    var sphereGeometry = new THREE.SphereGeometry(0.3, 32, 32);
+                    var sphereGeometry = new THREE.SphereGeometry(0.1, 32, 32);
                     var sphereMaterial = new THREE.MeshBasicMaterial({color: 0x7777ff, wireframe: false});
                     var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
                     sphere.position.x = x;
                     sphere.position.y = y;
                     sphere.position.z = z;
-                    sphere_array.push(sphere);
-                    this.scene.add(sphere);
+
+                    var helper = new THREE.BoundingBoxHelper(sphere, 0x7777ff);
+                    helper.update();
+                    sphere_array.push(helper);
+                    this.scene.add(helper);
                     if (rotation == 0) {
                     x++;
                      }  
@@ -1062,6 +1076,17 @@ window.onload = function init() {
 
 	//TPiece(world);
 
+    var keep_track_planes = [];
+    plane1=[];
+    var plane2=[];
+    var plane3=[];
+    var plane4=[];
+    for (var i=0; i<18; i++) {
+        plane1.push([0]);
+        plane2.push([0]);
+        plane3.push([0]);
+        plane4.push([0]);
+    }
 
 	world.render();
 
@@ -1083,10 +1108,10 @@ window.onload = function init() {
         
 		if (other_object.active == true) 
             return
-        rot+=1;
+        // rot+=1;
 		if (rot == 4) 
 			rot =0;
-		
+		world.pause();
 		game_piece.setMass();
 		game_piece.setLinearVelocity({x: 0, y: 0, z: 0});
 		for(var i=0; i<game_piece.getActivePieces().length; i++){
@@ -1096,23 +1121,79 @@ window.onload = function init() {
 
 		// currentpiece+=1;
         game_piece.setInactive();
-		game_piece.create_new_piece(rot);
-        world.addPiece(game_piece.getActivePieces());
+		
 		//game_piece.rotate(rot);
 		// game_piece.get(world, rot);
 		//world.add(game_piece.get());
 
-		game_piece.setLinearVelocity();
+		
 		var rad90 = Math.PI * .5;
+        
+		
+
+        calc_collisions(planes[0], game_piece.getActivePieces());
+        game_piece.create_new_piece(rot);
         var array = game_piece.getActivePieces();
-		for(var i=0; i<array.length; i++){
+        for(var i=0; i<array.length; i++){
         array[i].addEventListener('collision', collisions);
         // game_piece.getActivePieces(); 
         }
-		world.pause();
-		new TWEEN.Tween( world.scene.rotation ).to( {  y:  world.scene.rotation.y + rad90}, 1000 ).start();
-		setTimeout(function(){world.pause()},1005);	
+        world.addPiece(game_piece.getActivePieces());
+        game_piece.setLinearVelocity();
+        world.pause();
+
+		// 
+		// new TWEEN.Tween( world.scene.rotation ).to( {  y:  world.scene.rotation.y + rad90}, 1000 ).start();
+		// setTimeout(function(){world.pause()},1005);	
 	}
+
+
+
+    function calc_collisions(obstacles, pieces) {
+        
+        bb = [];
+
+        // console.log(pieces)
+        for (var j=0; j<pieces.length; j++) {
+
+            var helper = new THREE.BoundingBoxHelper(pieces[j], 0x7777ff);
+            helper.update();
+            // console.log(helper);
+            bb.push(helper);
+        }
+       
+    
+        for (var i=0; i<obstacles.length; i++) {
+            for (var j=0; j<bb.length; j++) {
+               
+                if(bb[j].box.containsBox(obstacles[i].box)) {
+                    
+                    z = pieces[j];
+                    
+                    var y =obstacles[i].position.y+7;
+                    var x =obstacles[i].position.x+6;
+                    plane1[y][x] = z;
+                    plane1[y][0] +=1;
+
+                    if (plane1[y][0] == 11) {
+                        for (var k=1; k<plane1[y].length; k++) {
+                            world.scene.remove(plane1[y][k])
+                        }
+
+                        plane1[y]=[];
+                        plane1[y][0]=0;
+                    }
+
+                    console.log("yes");
+                }
+                    // pieces[j].position.x+=10;
+            }
+        }
+        
+        
+    }
+
+
 
 	keydown=0;
 
