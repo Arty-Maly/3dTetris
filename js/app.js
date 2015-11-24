@@ -80,19 +80,19 @@ function Game_Piece() {
 			
     		}
 	topleftbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true}, 1.0, 0), 500);
-    topleftbox.position.x = basepositionx-(1*xoffset);
-    topleftbox.position.y = basepositiony+1;
-    topleftbox.position.z = basepositionz-(1*zoffset);
+    topleftbox.position.x = (-1*xoffset);
+    topleftbox.position.y = 1;
+    topleftbox.position.z = (-1*zoffset);
 
     topmiddlebox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true}, 1.0, 0), 500);
-    topmiddlebox.position.x = basepositionx;
-    topmiddlebox.position.y = basepositiony+1;
-    topmiddlebox.position.z = basepositionz;
+    //topmiddlebox.position.x = basepositionx;
+    topmiddlebox.position.y = 1;
+    //topmiddlebox.position.z = basepositionz;
 
     toprightbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true}, 1.0, 0), 500);
-    toprightbox.position.x = basepositionx+(1*xoffset);
-    toprightbox.position.y = basepositiony+1;
-    toprightbox.position.z = basepositionz+(1*zoffset);
+    toprightbox.position.x = (1*xoffset);
+    toprightbox.position.y = 1;
+    toprightbox.position.z = (1*zoffset);
 
     middlebox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true}, 1.0, 0), 500);
     middlebox.position.x = basepositionx;
@@ -100,9 +100,14 @@ function Game_Piece() {
     middlebox.position.z = basepositionz;
 
     lowbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true}, 1.0, 0), 500);
-    lowbox.position.x = basepositionx;
-    lowbox.position.y = basepositiony-1;
-    lowbox.position.z = basepositionz;
+   // lowbox.position.x = basepositionx;
+    lowbox.position.y = -1;
+    //lowbox.position.z = basepositionz;
+
+    middlebox.add(topmiddlebox);
+    middlebox.add(toprightbox);
+    middlebox.add(topleftbox);
+    middlebox.add(lowbox);
 
     // world.add(topleftbox);
     // world.add(topmiddlebox);
@@ -178,8 +183,9 @@ function Game_Piece() {
     // this.boundBox4 = new THREE.Box3().setFromObject(middlebox);
     // this.boundBox5 = new THREE.Box3().setFromObject(lowbox);
     // this.boundBoxes = [this.boundBox1, this.boundBox2, this.boundBox3, this.boundBox4, this.boundBox5]
-    this.constraints = [tltmhigh, tltmlow, trtmhigh, trtmlow, mtmright, mtmleft, mlmright, mlmleft]
-	this.piece = [topmiddlebox, topleftbox, toprightbox, middlebox, lowbox];
+    //this.constraints = [tltmhigh, tltmlow, trtmhigh, trtmlow, mtmright, mtmleft, mlmright, mlmleft]
+	//this.piece = [topmiddlebox, topleftbox, toprightbox, middlebox, lowbox];
+    this.piece = [middlebox];
      for (var i=0; i<this.piece.length; i++) {
         
      }
@@ -1070,7 +1076,7 @@ window.onload = function init() {
   	//world.add(game_piece.get());
 
     world.addPiece(game_piece.getActivePieces());
-    world.addConstraint(game_piece.getConstraints());
+    //world.addConstraint(game_piece.getConstraints());
   	game_piece.setLinearVelocity();
 
 
