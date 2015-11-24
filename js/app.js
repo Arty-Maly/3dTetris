@@ -6,27 +6,42 @@ function Game_Piece() {
 
 			this.piece = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
 			this.piece.position.x = 0;
-    		this.piece.position.y = 10;
-    		this.piece.position.z = 8;
+            this.piece.position.y = 10;
+            this.piece.position.z = 8;
     		this.piece.__dirtyRotation=true;
     		this.piece.__dirtyPosition=true;
+            this.piece.active = true;
 }
 
 	Game_Piece.prototype={
 		constructor:Game_Piece,
 
-		create_new_piece: function(world) {
-
+		create_new_piece: function(rot) {
+            var self=this;
 		//create_T_piece(world);
-    		
-    		
+    		// var num = Math.floor((Math.random() * 6));
+      //       switch (num){
+      //           case 0: this.LTPiece(rot);
+      //                   break;
+      //           case 1: this.RTPiece(rot);
+      //                   break;
+      //           case 2: this.TPiece(rot);
+      //                   break;
+      //           case 3: this.IPiece(rot);
+      //                   break;
+      //           case 4: this.ZPiece(rot);
+      //                   break;
+      //           case 5: this.CubePiece(rot);
+      //                   break;
+      //       }
+    		self.TPiece(rot);
     		// Game_World.prototype.add.call(this.piece);
 		}
 
 
 		,
 //different pieces starting below:
-		TPiece: function(world, rot){
+		TPiece: function(rot){
 
 				var basepositionx, basepositiony, basepositionz;
 
@@ -56,36 +71,36 @@ function Game_Piece() {
     			break;
 			
     		}
-	topleftbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+	topleftbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true}, 1.0, 0), 500);
     topleftbox.position.x = basepositionx-1;
     topleftbox.position.y = basepositiony+1;
     topleftbox.position.z = basepositionz;
 
-	topmiddlebox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+	topmiddlebox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true}, 1.0, 0), 500);
 	topmiddlebox.position.x = basepositionx;
     topmiddlebox.position.y = basepositiony+1;
     topmiddlebox.position.z = basepositionz;
 
-    toprightbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    toprightbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true}, 1.0, 0), 500);
     toprightbox.position.x = basepositionx+1;
     toprightbox.position.y = basepositiony+1;
     toprightbox.position.z = basepositionz;
 
-    middlebox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    middlebox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true}, 1.0, 0), 500);
 	middlebox.position.x = basepositionx;
     middlebox.position.y = basepositiony;
     middlebox.position.z = basepositionz;
 
-    lowbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    lowbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true}, 1.0, 0), 500);
 	lowbox.position.x = basepositionx;
     lowbox.position.y = basepositiony-1;
     lowbox.position.z = basepositionz;
 
-    world.add(topleftbox);
-    world.add(topmiddlebox);
-    world.add(toprightbox);
-    world.add(middlebox);
-    world.add(lowbox);
+    // world.add(topleftbox);
+    // world.add(topmiddlebox);
+    // world.add(toprightbox);
+    // world.add(middlebox);
+    // world.add(lowbox);
 
     var tltmhigh = new Physijs.PointConstraint(
     topleftbox, // First object to be constrained
@@ -99,59 +114,64 @@ function Game_Piece() {
     new THREE.Vector3( basepositionx - 0.5, basepositiony +0.5, basepositionz ) // point in the scene to apply the constraint
 	);
 
-	world.addConstraint( tltmhigh );
-	world.addConstraint( tltmlow );
-
+	// world.addConstraint( tltmhigh );
+	// world.addConstraint( tltmlow );
 
     var trtmhigh = new Physijs.PointConstraint(
     toprightbox, // First object to be constrained
     topmiddlebox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
     new THREE.Vector3( basepositionx+0.5, basepositiony+1.5, basepositionz ) // point in the scene to apply the constraint
 	);
-
 	var trtmlow = new Physijs.PointConstraint(
     toprightbox, // First object to be constrained
     topmiddlebox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
     new THREE.Vector3( basepositionx+0.5, basepositionx+0.5, basepositionz ) // point in the scene to apply the constraint
 	);
 
-	world.addConstraint( trtmhigh );
-	world.addConstraint( trtmlow );
-
+	// world.addConstraint( trtmhigh );
+	// world.addConstraint( trtmlow );
 	var mtmright = new Physijs.PointConstraint(
     middlebox, // First object to be constrained
     topmiddlebox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
     new THREE.Vector3( basepositionx+0.1, basepositiony+0.5, basepositionz ) // point in the scene to apply the constraint
 	);
-
 	var mtmleft = new Physijs.PointConstraint(
     middlebox, // First object to be constrained
     topmiddlebox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
     new THREE.Vector3( basepositionx-0.1, basepositiony+0.5, basepositionz ) // point in the scene to apply the constraint
 	);
 
-	world.addConstraint( mtmright );
-	world.addConstraint( mtmleft );
-
+	// world.addConstraint( mtmright );
+	// world.addConstraint( mtmleft );
     var mlmright = new Physijs.PointConstraint(
     middlebox, // First object to be constrained
     lowbox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
     new THREE.Vector3( basepositionx+0.1, basepositiony-0.5, basepositionz ) // point in the scene to apply the constraint
 	);
-
 	var mlmleft = new Physijs.PointConstraint(
     middlebox, // First object to be constrained
     lowbox, // OPTIONAL second object - if omitted then physijs_mesh_1 will be constrained to the scene
     new THREE.Vector3( basepositionx-0.1, basepositiony-0.5, basepositionz ) // point in the scene to apply the constraint
 	);
-
-	world.addConstraint( mlmright );
-	world.addConstraint( mlmleft );
-
+	// world.addConstraint( mlmright );
+	// world.addConstraint( mlmleft );
+    topmiddlebox.active = true;
+    topleftbox.active = true;
+    toprightbox.active = true; 
+    middlebox.active = true;
+    lowbox.active = true;
+    this.constraints = [tltmhigh, tltmlow, trtmhigh, trtmlow, mtmright, mtmleft, mlmright, mlmleft]
 	this.piece = [topmiddlebox, topleftbox, toprightbox, middlebox, lowbox];
-
+     for (var i=0; i<this.piece.length; i++) {
+        console.log(this.piece[i].active);
+     }
 		},
-
+    setInactive: function() {
+        var array = this.getActivePieces();
+        for (var i=0; i<array.length; i++) {
+            array[i].active=false;
+        }
+    },
 	IPiece: function (world, rot){
 
 			var basepositionx, basepositiony, basepositionz;
@@ -710,26 +730,34 @@ RTPiece: function (world, rot){
 			}
 		},
 
-		get: function(world, rot) {
-			var self=this;
-			var num = Math.floor((Math.random() * 6));
-			switch (num){
-				case 0: self.LTPiece(world, rot);
-						break;
-				case 1: self.RTPiece(world, rot);
-						break;
-				case 2: self.TPiece(world, rot);
-						break;
-				case 3: self.IPiece(world, rot);
-						break;
-				case 4: self.ZPiece(world, rot);
-						break;
-				case 5: self.CubePiece(world, rot);
-						break;
-			}
-			
-			//return this.piece;
-		},
+		// get: function(world, rot) {
+		// 	var self=this;
+		// 	// var num = Math.floor((Math.random() * 6));
+		// 	// switch (num){
+		// 	// 	case 0: self.LTPiece(world, rot);
+		// 	// 			break;
+		// 	// 	case 1: self.RTPiece(world, rot);
+		// 	// 			break;
+		// 	// 	case 2: self.TPiece(world, rot);
+		// 	// 			break;
+		// 	// 	case 3: self.IPiece(world, rot);
+		// 	// 			break;
+		// 	// 	case 4: self.ZPiece(world, rot);
+		// 	// 			break;
+		// 	// 	case 5: self.CubePiece(world, rot);
+		// 	// 			break;
+		// 	// }
+		// 	self.TPiece(rot);
+		// 	//return this.piece;
+		// },
+
+        getActivePieces: function() {
+            return this.piece;
+        },
+
+        getConstraints: function() {
+            return this.constraints;
+        },
 
 		rotate: function(rot) {
 
@@ -763,9 +791,9 @@ RTPiece: function (world, rot){
 
 		applyImpulse: function(direction, rot) {
 
-			var movement=1.1;
+			var movement=1.01;
 			if(direction=="left"){
-				movement=-1.1;
+				movement=-1.01;
 			};
 
 			switch(rot) {
@@ -822,8 +850,82 @@ function Game_World() {
         this.floor.position.y = -8;
         this.floor.position.z = 0;
         this.floor.isfloor = "yes";
+        planes = [];       
+        //look here
+        for (var rotation=0; rotation<4; rotation++) {
+            sphere_array=[];
+            // sphere_array=[];
+            switch (rotation) {
+                case 0: var x = -5;
+                        var y = -7;
+                        var z=7;
+                break;
+                case 1:  var x= -6;
+                         var y= -7;
+                         var z=-4;
+                break;
+                case 2: var x= -5;
+                        var y= -7;
+                        var z=-5;
+                break;
+                case 3: var x= 6;
+                        var y= -7;
+                        var z=-4;
+            }
+            
+            for (var i=0; i<18; i++) {
 
+                for (var j=0; j<11; j++) {
+
+                    var sphereGeometry = new THREE.SphereGeometry(0.3, 32, 32);
+                    var sphereMaterial = new THREE.MeshBasicMaterial({color: 0x7777ff, wireframe: false});
+                    var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+                    sphere.position.x = x;
+                    sphere.position.y = y;
+                    sphere.position.z = z;
+                    sphere_array.push(sphere);
+                    this.scene.add(sphere);
+                    if (rotation == 0) {
+                    x++;
+                     }  
+                    if (rotation == 1) {
+                      z++;
+                    }
+                     if (rotation == 2) {
+                     x++;
+                    }
+                    if (rotation == 3) {
+                     z++;
+                    }
+                }
+                y++;
+                if (rotation == 0) {
+                    x=-5
+                }
+
+                if (rotation == 1) {
+                     // x= -6;
+                     z=-4;
+                }
+                if (rotation == 2) {
+                    x=-5;
+                    
+                }
+                if (rotation == 3) {
+                    z=-4;
+                    
+                }
+              
+            }
+            planes[rotation]=sphere_array;
+
+
+        }
+
+        ////look up^^^^^^^^
+        
         this.scene.add(this.floor);
+        
         this.isPaused = false;
 
 
@@ -866,12 +968,17 @@ function Game_World() {
             TWEEN.update();
         },
 
-        add: function(object){
-        	this.scene.add(object);
+        addPiece: function(array){
+        	for (var i =0; i<array.length; i++) {
+            
+                this.scene.add(array[i]);
+            }
         },
 
-        addConstraint(object) {
-        	this.scene.addConstraint(object);
+        addConstraint: function (array) {
+        	for (var i =0; i<array.length; i++) {
+                this.scene.addConstraint(array[i]);
+            }
         },
 
         pause: function(){
@@ -892,9 +999,12 @@ window.onload = function init() {
     world.setYGravity();
     world.setRenderer();
     world.attachRenderer();
-    game_piece.get(world, rot);
+    game_piece.create_new_piece(rot);
    	//game_piece.LTPiece(world);
   	//world.add(game_piece.get());
+
+    world.addPiece(game_piece.getActivePieces());
+    world.addConstraint(game_piece.getConstraints());
   	game_piece.setLinearVelocity();
 
 
@@ -906,34 +1016,47 @@ window.onload = function init() {
 	var game_loop = true;
 	var new_piece = true;
 	
+    var array = game_piece.getActivePieces();
 
-	// for(var i=0; i<game_piece.piece.length; i++){
-	// 	game_piece.piece[i].addEventListener('collision', collisions); 
-	// }
+	for(var i=0; i<array.length; i++){
+       
+	 	array[i].addEventListener('collision', collisions);
+        // game_piece.getActivePieces(); 
+	}
 	
 	
 	
 	function collisions(other_object, linear_velocity, angular_velocity) {
-		rot+=1;
+  
+        
+		if (other_object.active == true) 
+            return
+        rot+=1;
 		if (rot == 4) 
 			rot =0;
 		
 		game_piece.setMass();
 		game_piece.setLinearVelocity({x: 0, y: 0, z: 0});
-		for(var i=0; i<game_piece.piece.length; i++){
+		for(var i=0; i<game_piece.getActivePieces().length; i++){
 		game_piece.piece[i].removeEventListener('collision', collisions);
 		}
 		//console.log(game_piece.get().removeEventListener('collision', collisions));
 
-		currentpiece+=1;
-		//game_piece.create_new_piece(world);
+		// currentpiece+=1;
+        game_piece.setInactive();
+		game_piece.create_new_piece(rot);
+        world.addPiece(game_piece.getActivePieces());
 		//game_piece.rotate(rot);
-		game_piece.get(world, rot);
+		// game_piece.get(world, rot);
 		//world.add(game_piece.get());
 
 		game_piece.setLinearVelocity();
 		var rad90 = Math.PI * .5;
-		game_piece.get().addEventListener('collision', collisions);
+        var array = game_piece.getActivePieces();
+		for(var i=0; i<array.length; i++){
+        array[i].addEventListener('collision', collisions);
+        // game_piece.getActivePieces(); 
+        }
 		world.pause();
 		new TWEEN.Tween( world.scene.rotation ).to( {  y:  world.scene.rotation.y + rad90}, 1000 ).start();
 		setTimeout(function(){world.pause()},1005);	
