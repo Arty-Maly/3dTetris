@@ -892,6 +892,16 @@ window.onload = function init() {
 		for(var i=0; i<game_piece.getActivePieces().length; i++){
 		game_piece.piece[i].removeEventListener('collision', collisions);
 		}
+
+
+        var children = [];
+
+        for(var i=0; i < game_piece.piece[0].children.length; i++){
+            children[i]=makebox(game_piece.piece[0].position.x + game_piece.piece[0].children[i].position.x, game_piece.piece[0].position.y + game_piece.piece[0].children[i].position.y,game_piece.piece[0].position.z + game_piece.piece[0].children[i].position.z );
+
+        }
+        world.scene.remove(game_piece.piece[0])
+        world.addPiece(children);
 		//console.log(game_piece.get().removeEventListener('collision', collisions));
 
 		// currentpiece+=1;
@@ -1039,6 +1049,12 @@ window.onload = function init() {
 
 }
 
-
+    function makebox(positionx, positiony, positionz){
+            var newbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+            newbox.position.x = positionx;
+            newbox.position.y = positiony;
+            newbox.position.z = positionz;
+            return newbox;
+    }
  
     
