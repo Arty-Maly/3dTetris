@@ -11,8 +11,13 @@ function Game_Piece() {
     		this.piece.__dirtyPosition=true;
             this.piece.active = true;
             this.boxgeom = new THREE.BoxGeometry(1, 1, 1);
-            this.mesh = new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true}, 1.0, 0);
+            this.mesh = new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: false}, 1.0, 0);
             this.weight = 500;
+            this.invisiblemesh = new THREE.MeshBasicMaterial({transparent: true, opacity: 0}, 1.0, 0);
+
+
+
+    
 }
 
 	Game_Piece.prototype={
@@ -36,7 +41,7 @@ function Game_Piece() {
                 case 5: self.CubePiece(rot);
                         break;
             }
-    		// self.TPiece(rot);
+    		// self.IPiece(rot);
     		// Game_World.prototype.add.call(this.piece);
 		}
 
@@ -82,7 +87,7 @@ function Game_Piece() {
             
             }
 
-    parentbox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
+    parentbox = new Physijs.BoxMesh(this.boxgeom, this.invisiblemesh, this.weight);
     parentbox.position.x = basepositionx;
     parentbox.position.y = basepositiony;
     parentbox.position.z = basepositionz;
@@ -187,7 +192,7 @@ function Game_Piece() {
             }
 
 
-    parentbox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
+    parentbox = new Physijs.BoxMesh(this.boxgeom, this.invisiblemesh, this.weight);
     parentbox.position.x = basepositionx;
     parentbox.position.y = basepositiony;
     parentbox.position.z = basepositionz;
@@ -266,7 +271,7 @@ ZPiece: function (rot){
             
             }
 
-    parentbox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
+    parentbox = new Physijs.BoxMesh(this.boxgeom, this.invisiblemesh, this.weight);
     parentbox.position.x = basepositionx;
     parentbox.position.y = basepositiony;
     parentbox.position.z = basepositionz;
@@ -347,7 +352,7 @@ CubePiece: function (rot){
             }
 
 
-    parentbox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
+    parentbox = new Physijs.BoxMesh(this.boxgeom, this.invisiblemesh, this.weight);
     parentbox.position.x = basepositionx;
     parentbox.position.y = basepositiony;
     parentbox.position.z = basepositionz;
@@ -431,7 +436,7 @@ LTPiece: function (rot){
             }
 
 
-    parentbox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
+    parentbox = new Physijs.BoxMesh(this.boxgeom, this.invisiblemesh, this.weight);
     parentbox.position.x = basepositionx;
     parentbox.position.y = basepositiony;
     parentbox.position.z = basepositionz;
@@ -487,7 +492,7 @@ RTPiece: function (rot){
                         
                 break;
 
-                case 1: basepositionx = 6;
+                case 1: basepositionx = -6;
                         basepositiony = 10;
                         basepositionz = 0;
                         zoffset = -1;
@@ -514,7 +519,7 @@ RTPiece: function (rot){
             }
 
 
-    parentbox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
+    parentbox = new Physijs.BoxMesh(this.boxgeom, this.invisiblemesh, this.weight);
     parentbox.position.x = basepositionx;
     parentbox.position.y = basepositiony;
     parentbox.position.z = basepositionz;
@@ -662,7 +667,7 @@ function Game_World() {
         this.floor.position.z = 0;
         this.floor.isfloor = "yes";
         this.counter = 0;
-        planes = [];       
+        grid = [];       
         //look here
         for (var rotation=0; rotation<4; rotation++) {
             sphere_array=[];
@@ -699,7 +704,7 @@ function Game_World() {
                     var helper = new THREE.BoundingBoxHelper(sphere, 0x7777ff);
                     helper.update();
                     sphere_array.push(helper);
-                    this.scene.add(helper);
+                    // this.scene.add(helper);
                     if (rotation == 0) {
                     x++;
                      }  
@@ -732,15 +737,12 @@ function Game_World() {
                 }
               
             }
-            planes[rotation]=sphere_array;
+            grid[rotation]=sphere_array;
 
 
         }
-
-        ////look up^^^^^^^^
         
         this.scene.add(this.floor);
-        
         this.isPaused = false;
 
 
@@ -770,22 +772,16 @@ function Game_World() {
 			if (!this.isPaused){
   			
   			this.scene.simulate();
-            // this.counter++;
-            // if (this.counter==1) {
-                // this.counter=0;
+           
                 this.piece.position.y-=0.07;
                 this.piece.__dirtyPosition=true;
-            // }
+          
   		}   
   
             requestAnimationFrame(this.render.bind(this));
             this.renderer.render(this.scene, this.camera);
             this.floor.__dirtyRotation = true;
-            //this.scene.getObjectByName(currentpiece).position.x+=.01;
-            //this.scene.getObjectByName(currentpiece).__dirtyPosition=true;
-
-            //obj.__dirtyPosition=true;
-            //this.game_piece.piece.__dirtyPosition=true;
+           
             TWEEN.update();
             
         },
@@ -833,16 +829,16 @@ window.onload = function init() {
 
 	//TPiece(world);
 
-    var keep_track_planes = [];
+    
+    plane0=[];
     plane1=[];
-    var plane2=[];
-    var plane3=[];
-    var plane4=[];
+    plane2=[];
+    plane3=[];
     for (var i=0; i<18; i++) {
+        plane0.push([0]);
         plane1.push([0]);
         plane2.push([0]);
         plane3.push([0]);
-        plane4.push([0]);
     }
 
 	world.render();
@@ -857,7 +853,7 @@ window.onload = function init() {
 	 	array[i].addEventListener('collision', collisions);
         // game_piece.getActivePieces(); 
 	}
-	
+	score = 0;
 	
 	
 	function collisions(other_object, linear_velocity, angular_velocity) {
@@ -881,26 +877,17 @@ window.onload = function init() {
             children[i]=makebox(game_piece.piece[0].children[i].getWorldPosition().x, game_piece.piece[0].children[i].getWorldPosition().y, game_piece.piece[0].children[i].getWorldPosition().z, rot);
 
         }
+        
+        calc_collisions(which_grid(rot), children, which_plane(rot))
         rot+=1;
         if (rot == 4) 
             rot =0;
         world.scene.remove(game_piece.piece[0])
         world.addPiece(children);
-		//console.log(game_piece.get().removeEventListener('collision', collisions));
-
-		// currentpiece+=1;
         game_piece.setInactive();
-		
-		//game_piece.rotate(rot);
-		// game_piece.get(world, rot);
-		//world.add(game_piece.get());
 
-		
 		var rad90 = Math.PI * .5;
-        
-		
 
-        calc_collisions(planes[0], children);
         game_piece.create_new_piece(rot);
         var array = game_piece.getActivePieces();
         for(var i=0; i<array.length; i++){
@@ -916,46 +903,65 @@ window.onload = function init() {
 		setTimeout(function(){world.pause()},1005);	
 	}
 
-
-
-    function calc_collisions(obstacles, pieces) {
+    function which_grid (rot) {
+        switch (rot) {
+            case 0: return grid[0];break;
+            case 1: return grid[1];break;
+            case 2: return grid[2];break;
+            case 3: return grid[3];break;
+        }
+    }
+    function which_plane (rot) {
+        switch (rot) {
+            case 0: return plane0;break;
+            case 1: return plane1;break;
+            case 2: return plane2;break;
+            case 3: return plane3;break;
+        }
+    }
+    function calc_collisions(obstacles, pieces, plane) {
         
-        bb = [];
-
-        // console.log(pieces)
+        var bb = [];
+        
         for (var j=0; j<pieces.length; j++) {
 
-            var helper = new THREE.BoundingBoxHelper(pieces[j], 0x7777ff);
-            helper.update();
-            // console.log(helper);
+            helper = new THREE.BoundingBoxHelper(pieces[j], 0x7777ff);
+            
+            
             bb.push(helper);
+            // world.scene.add(helper);
+            helper.update();
         }
        
     
         for (var i=0; i<obstacles.length; i++) {
             for (var j=0; j<bb.length; j++) {
-               
+               console.log(bb[j].box.containsBox(obstacles[i].box))
                 if(bb[j].box.containsBox(obstacles[i].box)) {
                     
                     z = pieces[j];
-                    
+                    console.log(z);
                     var y =obstacles[i].position.y+7;
                     var x =obstacles[i].position.x+6;
-                    plane1[y][x] = z;
-                    plane1[y][0] +=1;
 
-                    if (plane1[y][0] == 11) {
-                        for (var k=1; k<plane1[y].length; k++) {
-                            world.scene.remove(plane1[y][k])
+                    plane[y][x] = z;
+                    plane[y][0] +=1;
+
+                    if (plane[y][0] == 11) {
+                        for (var k=1; k<plane[y].length; k++) {
+                            console.log(plane[y][k])
+                            world.scene.remove(plane[y][k])
+
                         }
-
-                        plane1[y]=[];
-                        plane1[y][0]=0;
+                        score+=100;
+                        document.getElementById("score").innerHTML = score;
+                        plane[y]=[];
+                        plane[y][0]=0;
                     }
-
-                    console.log("yes");
+                    
+                    // console.log("yes");
                 }
-                    // pieces[j].position.x+=10;
+                    
             }
         }
         
@@ -981,26 +987,24 @@ window.onload = function init() {
 		 case 87:  break;
 		 case 83:  break;
 
-		 case 68: 
-					if (keydown == 0) {
-						//world.pause();
-						
-						game_piece.applyImpulse("right",rot);
-						// world.scene.getObjectByName(currentpiece).__dirtyPosition=true;
-						// game_piece.piece.position.setZ(z+2);
+		  case 68:
+                    if (keydown == 0) {
+                        if( !checkoutofboundsright(rot, game_piece)){
+                            game_piece.applyImpulse("right",rot);}
+                                                      
+                            keydown = 1;
+                    }
 
-						keydown = 1;
-					}		 		
-		 		
-		 		  	break;
+            break;
 
-		 case 65: 
-		 		if (keydown == 0) {
-		 		game_piece.applyImpulse("left",rot);
-		 		//setTimeout(function() { game_piece.setLinearVelocity({x: 0, y: -5, z: 0});}, 30);
-		 		keydown =1;
-		 		}  
-		 		break;
+                 case 65:
+                        if (keydown == 0) {
+                            if( !checkoutofboundsleft(rot, game_piece)){
+                                game_piece.applyImpulse("left",rot);
+                            }
+                            keydown =1;
+                        }
+                break;
 
 		 case 82: /*R*/  
             game_piece.rotate(rot);
@@ -1066,5 +1070,81 @@ window.onload = function init() {
             
         }
 }
+
+ function checkoutofboundsleft(rot, game_piece){
+        var outofbounds = false;
+      // var a = game_piece.piece[0];
+       var b = game_piece.piece[0].children;
+
+       switch (rot) {
+            case 0:
+                for(var i =0; i<b.length; i++){
+                if(b[i].getWorldPosition().x<-5){
+                    return true;
+                    }
+                 }
+                 break;
+            case 1:
+                for(var i =0; i<b.length; i++){
+                if(b[i].getWorldPosition().x<-4){
+                    return true;
+                    }
+                 }
+                 break;
+            case 2:
+                for(var i =0; i<b.length; i++){
+                if(b[i].getWorldPosition().x<-5){
+                    return true;
+                    }
+                 }
+                 break;
+            case 3:
+                for(var i =0; i<b.length; i++){
+                if(b[i].getWorldPosition().x<-6){
+                    return true;
+                    }
+                 }
+                 break;
+       return outofbounds;
+
+    }
+}
+
+        function checkoutofboundsright(rot, game_piece){
+        var outofbounds = false;
+        console.log("Rot: " + rot);
+      // var a = game_piece.piece[0];
+       var b = game_piece.piece[0].children;
+
+
+       switch (rot) {
+            case 0:
+ for(var i =0; i<b.length; i++){
+        if(b[i].getWorldPosition().x > 5){
+           // outofbounds=true;
+            return true;
+        }}
+                 break;
+            case 1:
+ for(var i =0; i<b.length; i++){
+        if(b[i].getWorldPosition().x > 6){
+            return true;
+        }}
+                 break;
+            case 2:
+ for(var i =0; i<b.length; i++){
+        if(b[i].getWorldPosition().x > 5){
+            return true;
+        }}
+                 break;
+            case 3:
+ for(var i =0; i<b.length; i++){
+        if(b[i].getWorldPosition().x > 4){
+            return true;
+        }}
+                 break;
+       return outofbounds;
+
+    }}
  
     
