@@ -10,6 +10,9 @@ function Game_Piece() {
     		this.piece.__dirtyRotation=true;
     		this.piece.__dirtyPosition=true;
             this.piece.active = true;
+            this.boxgeom = new THREE.BoxGeometry(1, 1, 1);
+            this.mesh = new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true}, 1.0, 0);
+            this.weight = 500;
 }
 
 	Game_Piece.prototype={
@@ -17,23 +20,23 @@ function Game_Piece() {
 
 		create_new_piece: function(rot) {
             var self=this;
-		//create_T_piece(world);
-    		// var num = Math.floor((Math.random() * 6));
-      //       switch (num){
-      //           case 0: this.LTPiece(rot);
-      //                   break;
-      //           case 1: this.RTPiece(rot);
-      //                   break;
-      //           case 2: this.TPiece(rot);
-      //                   break;
-      //           case 3: this.IPiece(rot);
-      //                   break;
-      //           case 4: this.ZPiece(rot);
-      //                   break;
-      //           case 5: this.CubePiece(rot);
-      //                   break;
-      //       }
-    		self.TPiece(rot);
+		
+    		var num = Math.floor((Math.random() * 6));
+            switch (num){
+                case 0: self.LTPiece(rot);
+                        break;
+                case 1: self.RTPiece(rot);
+                        break;
+                case 2: self.TPiece(rot);
+                        break;
+                case 3: self.IPiece(rot);
+                        break;
+                case 4: self.ZPiece(rot);
+                        break;
+                case 5: self.CubePiece(rot);
+                        break;
+            }
+    		// self.TPiece(rot);
     		// Game_World.prototype.add.call(this.piece);
 		}
 
@@ -79,32 +82,32 @@ function Game_Piece() {
             
             }
 
-    parentbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true}, 1.0, 0), 500);
+    parentbox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
     parentbox.position.x = basepositionx;
     parentbox.position.y = basepositiony;
     parentbox.position.z = basepositionz;
 
-	topleftbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true}, 1.0, 0), 500);
+	topleftbox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
     topleftbox.position.x = (-1*xoffset)+zoffset;
     topleftbox.position.y = 1;
     topleftbox.position.z = (-1*zoffset)+xoffset;
 
-    topmiddlebox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true}, 1.0, 0), 500);
+    topmiddlebox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
     topmiddlebox.position.x = zoffset;
     topmiddlebox.position.y = 1;
     topmiddlebox.position.z = xoffset;
 
-    toprightbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true}, 1.0, 0), 500);
+    toprightbox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
     toprightbox.position.x = (1*xoffset)+zoffset;
     toprightbox.position.y = 1;
     toprightbox.position.z = (1*zoffset)+xoffset;
 
-    middlebox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true}, 1.0, 0), 500);
+    middlebox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
     middlebox.position.x = zoffset;
     middlebox.position.y = 0;
     middlebox.position.z = xoffset;
 
-    lowbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true}, 1.0, 0), 500);
+    lowbox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
     lowbox.position.x = zoffset;
     lowbox.position.y = -1;
     lowbox.position.z = xoffset;
@@ -184,27 +187,27 @@ function Game_Piece() {
             }
 
 
-    parentbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true}, 1.0, 0), 500);
+    parentbox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
     parentbox.position.x = basepositionx;
     parentbox.position.y = basepositiony;
     parentbox.position.z = basepositionz;
 
-    topbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    topbox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
     topbox.position.x = zoffset;
     topbox.position.y = 1;
     topbox.position.z = xoffset;
 
-    topmiddlebox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    topmiddlebox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
     topmiddlebox.position.x = zoffset;
     //topmiddlebox.position.y = basepositiony;
     topmiddlebox.position.z = xoffset;
 
-    botmiddlebox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    botmiddlebox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
     botmiddlebox.position.x = zoffset;
     botmiddlebox.position.y = -1;
     botmiddlebox.position.z = xoffset;
 
-    botbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    botbox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
     botbox.position.x = zoffset;
     botbox.position.y = -2;
     botbox.position.z = xoffset;
@@ -263,27 +266,27 @@ ZPiece: function (rot){
             
             }
 
-    parentbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true}, 1.0, 0), 500);
+    parentbox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
     parentbox.position.x = basepositionx;
     parentbox.position.y = basepositiony;
     parentbox.position.z = basepositionz;
 
-    topleftbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    topleftbox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
     topleftbox.position.x = zoffset-(1*xoffset);
     topleftbox.position.y = 1;
     topleftbox.position.z = xoffset-(1*zoffset);
 
-    topmiddlebox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    topmiddlebox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
     topmiddlebox.position.x = zoffset;
     topmiddlebox.position.y = 1;
     topmiddlebox.position.z = xoffset;
 
-    botrightbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    botrightbox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
     botrightbox.position.x = zoffset+(1*xoffset);
     botrightbox.position.y = 0;
     botrightbox.position.z = xoffset+(1*zoffset);
 
-    botmiddlebox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    botmiddlebox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
     botmiddlebox.position.x = zoffset;
     botmiddlebox.position.y = 0;
     botmiddlebox.position.z = xoffset;
@@ -344,27 +347,27 @@ CubePiece: function (rot){
             }
 
 
-    parentbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true}, 1.0, 0), 500);
+    parentbox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
     parentbox.position.x = basepositionx;
     parentbox.position.y = basepositiony;
     parentbox.position.z = basepositionz;
 
-    topleftbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    topleftbox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
     topleftbox.position.x = zoffset-(1*xoffset);
     topleftbox.position.y = 1;
     topleftbox.position.z = xoffset-(1*zoffset);
 
-    botleftbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    botleftbox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
     botleftbox.position.x = zoffset-(1*xoffset);
     botleftbox.position.y = 0;
     botleftbox.position.z = xoffset-(1*zoffset);
 
-    toprightbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    toprightbox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
     toprightbox.position.x = zoffset;
     toprightbox.position.y = 1;
     toprightbox.position.z = xoffset;
 
-    botrightbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    botrightbox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
     botrightbox.position.x = zoffset;
     botrightbox.position.y = 0;
     botrightbox.position.z = xoffset;
@@ -428,28 +431,28 @@ LTPiece: function (rot){
             }
 
 
-    parentbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true}, 1.0, 0), 500);
+    parentbox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
     parentbox.position.x = basepositionx;
     parentbox.position.y = basepositiony;
     parentbox.position.z = basepositionz;
 
-    topleftbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    topleftbox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
     topleftbox.position.x = zoffset-(1*xoffset);
     topleftbox.position.y = 1;
     topleftbox.position.z = xoffset-(1*zoffset);
 
-    topmiddlebox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    topmiddlebox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
     topmiddlebox.position.x = zoffset;
     topmiddlebox.position.y = 1;
     topmiddlebox.position.z = xoffset;
 
 
-    middlebox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    middlebox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
     middlebox.position.x = zoffset;
     middlebox.position.y = 0;
     middlebox.position.z = xoffset;
 
-    lowbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    lowbox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
     lowbox.position.x = zoffset;
     lowbox.position.y = -1;
     lowbox.position.z = xoffset;
@@ -511,27 +514,27 @@ RTPiece: function (rot){
             }
 
 
-    parentbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true}, 1.0, 0), 500);
+    parentbox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
     parentbox.position.x = basepositionx;
     parentbox.position.y = basepositiony;
     parentbox.position.z = basepositionz;
 
-    topmiddlebox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    topmiddlebox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
     topmiddlebox.position.x = zoffset;
     topmiddlebox.position.y = 1;
     topmiddlebox.position.z = xoffset;
 
-    toprightbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    toprightbox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
     toprightbox.position.x = zoffset+(1*xoffset);
     toprightbox.position.y = 1;
     toprightbox.position.z = xoffset+(1*zoffset);
 
-    middlebox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    middlebox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
     middlebox.position.x = zoffset;
     middlebox.position.y = 0;
     middlebox.position.z = xoffset;
 
-    lowbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+    lowbox = new Physijs.BoxMesh(this.boxgeom, this.mesh, this.weight);
     lowbox.position.x = zoffset;
     lowbox.position.y = -1;
     lowbox.position.z = xoffset;
@@ -788,12 +791,12 @@ function Game_World() {
 			if (!this.isPaused){
   			
   			this.scene.simulate();
-            this.counter++;
-            if (this.counter==30) {
-                this.counter=0;
-                this.piece.position.y-=1;
+            // this.counter++;
+            // if (this.counter==1) {
+                // this.counter=0;
+                this.piece.position.y-=0.07;
                 this.piece.__dirtyPosition=true;
-            }
+            // }
   		}   
   
             requestAnimationFrame(this.render.bind(this));
@@ -883,10 +886,10 @@ window.onload = function init() {
         
 		if (other_object.active == true) 
             return
-        // rot+=1;
+        rot+=1;
 		if (rot == 4) 
 			rot =0;
-		world.pause();
+		// world.pause();
 		game_piece.setMass();
 		game_piece.setLinearVelocity({x: 0, y: 0, z: 0});
 		for(var i=0; i<game_piece.getActivePieces().length; i++){
@@ -894,10 +897,10 @@ window.onload = function init() {
 		}
 
 
-        var children = [];
+         var children = [];
 
         for(var i=0; i < game_piece.piece[0].children.length; i++){
-            children[i]=makebox(game_piece.piece[0].position.x + game_piece.piece[0].children[i].position.x, game_piece.piece[0].position.y + game_piece.piece[0].children[i].position.y,game_piece.piece[0].position.z + game_piece.piece[0].children[i].position.z );
+            children[i]=makebox(game_piece.piece[0].children[i].getWorldPosition().x, game_piece.piece[0].children[i].getWorldPosition().y, game_piece.piece[0].children[i].getWorldPosition().z);
 
         }
         world.scene.remove(game_piece.piece[0])
@@ -916,7 +919,7 @@ window.onload = function init() {
         
 		
 
-        calc_collisions(planes[0], game_piece.getActivePieces());
+        calc_collisions(planes[0], children);
         game_piece.create_new_piece(rot);
         var array = game_piece.getActivePieces();
         for(var i=0; i<array.length; i++){
@@ -927,9 +930,9 @@ window.onload = function init() {
         game_piece.setLinearVelocity();
         world.pause();
 
-		// 
-		// new TWEEN.Tween( world.scene.rotation ).to( {  y:  world.scene.rotation.y + rad90}, 1000 ).start();
-		// setTimeout(function(){world.pause()},1005);	
+		
+		new TWEEN.Tween( world.scene.rotation ).to( {  y:  world.scene.rotation.y + rad90}, 1000 ).start();
+		setTimeout(function(){world.pause()},1005);	
 	}
 
 
@@ -1050,7 +1053,7 @@ window.onload = function init() {
 }
 
     function makebox(positionx, positiony, positionz){
-            var newbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
+            var newbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 0);
             newbox.position.x = positionx;
             newbox.position.y = positiony;
             newbox.position.z = positionz;
