@@ -559,7 +559,7 @@ RTPiece: function (rot){
 
 		setLinearVelocity: function(velocity) {
 			for(var i =0; i<this.piece.length; i++){
-			this.piece[i].setLinearVelocity(velocity || {x: 0, y: -5, z: 0} );
+			this.piece[i].setLinearVelocity(velocity || {x: 0, y: 0, z: 0} );
 			}
 		},
 
@@ -679,6 +679,7 @@ function Game_World() {
         this.floor.position.y = -8;
         this.floor.position.z = 0;
         this.floor.isfloor = "yes";
+        this.counter = 0;
         planes = [];       
         //look here
         for (var rotation=0; rotation<4; rotation++) {
@@ -701,13 +702,13 @@ function Game_World() {
                         var y= -7;
                         var z=-4;
             }
-            
+            var sphereGeometry = new THREE.SphereGeometry(0.1, 32, 32);
+            var sphereMaterial = new THREE.MeshBasicMaterial({color: 0x7777ff, wireframe: false});
             for (var i=0; i<18; i++) {
 
                 for (var j=0; j<11; j++) {
 
-                    var sphereGeometry = new THREE.SphereGeometry(0.1, 32, 32);
-                    var sphereMaterial = new THREE.MeshBasicMaterial({color: 0x7777ff, wireframe: false});
+                    
                     var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
                     sphere.position.x = x;
                     sphere.position.y = y;
@@ -783,10 +784,16 @@ function Game_World() {
 			document.getElementById(this.domElement).appendChild(this.renderer.domElement);
 		},
 		render: function(){
+
 			if (!this.isPaused){
   			
   			this.scene.simulate();
-
+            this.counter++;
+            if (this.counter==30) {
+                this.counter=0;
+                this.piece.position.y-=1;
+                this.piece.__dirtyPosition=true;
+            }
   		}   
   
             requestAnimationFrame(this.render.bind(this));
@@ -798,12 +805,14 @@ function Game_World() {
             //obj.__dirtyPosition=true;
             //this.game_piece.piece.__dirtyPosition=true;
             TWEEN.update();
+            
         },
 
         addPiece: function(array){
         	for (var i =0; i<array.length; i++) {
-            
+                
                 this.scene.add(array[i]);
+                this.piece = array[i];
             }
         },
 
