@@ -50,13 +50,13 @@ function Game_Piece() {
     switch(rot) {
                 case 0: basepositionx = 0;
                         basepositiony = 10;
-                        basepositionz = 6;
+                        basepositionz = 7;
                         xoffset = 1;
                         zoffset = 0;
                         
                 break;
 
-                case 1: basepositionx = -5;
+                case 1: basepositionx = -6;
                         basepositiony = 10;
                         basepositionz = 0;
                         zoffset = -1;
@@ -66,13 +66,13 @@ function Game_Piece() {
 
                 case 2: basepositionx = 0;
                         basepositiony = 10;
-                        basepositionz = -4;
+                        basepositionz = -5;
                         xoffset = -1;
                         zoffset = 0;
                         
                 break;
 
-                case 3: basepositionx = 5;
+                case 3: basepositionx = 6;
                         basepositiony = 10;
                         basepositionz = 0;
                         zoffset = 1;
@@ -154,13 +154,13 @@ function Game_Piece() {
     switch(rot) {
                 case 0: basepositionx = 0;
                         basepositiony = 10;
-                        basepositionz = 6;
+                        basepositionz = 7;
                         xoffset = 1;
                         zoffset = 0;
                         
                 break;
 
-                case 1: basepositionx = -5;
+                case 1: basepositionx = -6;
                         basepositiony = 10;
                         basepositionz = 0;
                         zoffset = -1;
@@ -170,13 +170,13 @@ function Game_Piece() {
 
                 case 2: basepositionx = 0;
                         basepositiony = 10;
-                        basepositionz = -4;
+                        basepositionz = -5;
                         xoffset = -1;
                         zoffset = 0;
                         
                 break;
 
-                case 3: basepositionx = 5;
+                case 3: basepositionx = 6;
                         basepositiony = 10;
                         basepositionz = 0;
                         zoffset = 1;
@@ -234,13 +234,13 @@ ZPiece: function (rot){
     switch(rot) {
                 case 0: basepositionx = 0;
                         basepositiony = 10;
-                        basepositionz = 6;
+                        basepositionz = 7;
                         xoffset = 1;
                         zoffset = 0;
                         
                 break;
 
-                case 1: basepositionx = -5;
+                case 1: basepositionx = -6;
                         basepositiony = 10;
                         basepositionz = 0;
                         zoffset = -1;
@@ -250,13 +250,13 @@ ZPiece: function (rot){
 
                 case 2: basepositionx = 0;
                         basepositiony = 10;
-                        basepositionz = -4;
+                        basepositionz = -5;
                         xoffset = -1;
                         zoffset = 0;
                         
                 break;
 
-                case 3: basepositionx = 5;
+                case 3: basepositionx = 6;
                         basepositiony = 10;
                         basepositionz = 0;
                         zoffset = 1;
@@ -314,13 +314,13 @@ CubePiece: function (rot){
     switch(rot) {
                 case 0: basepositionx = 0;
                         basepositiony = 10;
-                        basepositionz = 6;
+                        basepositionz = 7;
                         xoffset = 1;
                         zoffset = 0;
                         
                 break;
 
-                case 1: basepositionx = -5;
+                case 1: basepositionx = -6;
                         basepositiony = 10;
                         basepositionz = 0;
                         zoffset = -1;
@@ -330,13 +330,13 @@ CubePiece: function (rot){
 
                 case 2: basepositionx = 0;
                         basepositiony = 10;
-                        basepositionz = -4;
+                        basepositionz = -5;
                         xoffset = -1;
                         zoffset = 0;
                         
                 break;
 
-                case 3: basepositionx = 5;
+                case 3: basepositionx = 6;
                         basepositiony = 10;
                         basepositionz = 0;
                         zoffset = 1;
@@ -398,13 +398,13 @@ LTPiece: function (rot){
     switch(rot) {
                 case 0: basepositionx = 0;
                         basepositiony = 10;
-                        basepositionz = 6;
+                        basepositionz = 7;
                         xoffset = 1;
                         zoffset = 0;
                         
                 break;
 
-                case 1: basepositionx = -5;
+                case 1: basepositionx = -6;
                         basepositiony = 10;
                         basepositionz = 0;
                         zoffset = -1;
@@ -414,13 +414,13 @@ LTPiece: function (rot){
 
                 case 2: basepositionx = 0;
                         basepositiony = 10;
-                        basepositionz = -4;
+                        basepositionz = -5;
                         xoffset = -1;
                         zoffset = 0;
                         
                 break;
 
-                case 3: basepositionx = 5;
+                case 3: basepositionx = 6;
                         basepositiony = 10;
                         basepositionz = 0;
                         zoffset = 1;
@@ -481,13 +481,13 @@ RTPiece: function (rot){
     switch(rot) {
                 case 0: basepositionx = 0;
                         basepositiony = 10;
-                        basepositionz = 6;
+                        basepositionz = 7;
                         xoffset = 1;
                         zoffset = 0;
                         
                 break;
 
-                case 1: basepositionx = -5;
+                case 1: basepositionx = 6;
                         basepositiony = 10;
                         basepositionz = 0;
                         zoffset = -1;
@@ -497,13 +497,13 @@ RTPiece: function (rot){
 
                 case 2: basepositionx = 0;
                         basepositiony = 10;
-                        basepositionz = -4;
+                        basepositionz = -5;
                         xoffset = -1;
                         zoffset = 0;
                         
                 break;
 
-                case 3: basepositionx = 5;
+                case 3: basepositionx = 6;
                         basepositiony = 10;
                         basepositionz = 0;
                         zoffset = 1;
@@ -565,27 +565,6 @@ RTPiece: function (rot){
 			this.piece[i].setLinearVelocity(velocity || {x: 0, y: 0, z: 0} );
 			}
 		},
-
-		// get: function(world, rot) {
-		// 	var self=this;
-		// 	// var num = Math.floor((Math.random() * 6));
-		// 	// switch (num){
-		// 	// 	case 0: self.LTPiece(world, rot);
-		// 	// 			break;
-		// 	// 	case 1: self.RTPiece(world, rot);
-		// 	// 			break;
-		// 	// 	case 2: self.TPiece(world, rot);
-		// 	// 			break;
-		// 	// 	case 3: self.IPiece(world, rot);
-		// 	// 			break;
-		// 	// 	case 4: self.ZPiece(world, rot);
-		// 	// 			break;
-		// 	// 	case 5: self.CubePiece(world, rot);
-		// 	// 			break;
-		// 	// }
-		// 	self.TPiece(rot);
-		// 	//return this.piece;
-		// },
 
         getActivePieces: function() {
             return this.piece;
@@ -691,21 +670,21 @@ function Game_World() {
             switch (rotation) {
                 case 0: var x = -5;
                         var y = -7;
-                        var z=7;
+                        var z=8;
                 break;
-                case 1:  var x= -6;
+                case 1:  var x= -7;
                          var y= -7;
                          var z=-4;
                 break;
                 case 2: var x= -5;
                         var y= -7;
-                        var z=-5;
+                        var z=-6;
                 break;
-                case 3: var x= 6;
+                case 3: var x= 7;
                         var y= -7;
                         var z=-4;
             }
-            var sphereGeometry = new THREE.SphereGeometry(0.1, 32, 32);
+            var sphereGeometry = new THREE.SphereGeometry(0.08, 32, 32);
             var sphereMaterial = new THREE.MeshBasicMaterial({color: 0x7777ff, wireframe: false});
             for (var i=0; i<18; i++) {
 
@@ -886,9 +865,8 @@ window.onload = function init() {
         
 		if (other_object.active == true) 
             return
-        rot+=1;
-		if (rot == 4) 
-			rot =0;
+        
+		
 		// world.pause();
 		game_piece.setMass();
 		game_piece.setLinearVelocity({x: 0, y: 0, z: 0});
@@ -900,9 +878,12 @@ window.onload = function init() {
          var children = [];
 
         for(var i=0; i < game_piece.piece[0].children.length; i++){
-            children[i]=makebox(game_piece.piece[0].children[i].getWorldPosition().x, game_piece.piece[0].children[i].getWorldPosition().y, game_piece.piece[0].children[i].getWorldPosition().z);
+            children[i]=makebox(game_piece.piece[0].children[i].getWorldPosition().x, game_piece.piece[0].children[i].getWorldPosition().y, game_piece.piece[0].children[i].getWorldPosition().z, rot);
 
         }
+        rot+=1;
+        if (rot == 4) 
+            rot =0;
         world.scene.remove(game_piece.piece[0])
         world.addPiece(children);
 		//console.log(game_piece.get().removeEventListener('collision', collisions));
@@ -1052,12 +1033,38 @@ window.onload = function init() {
 
 }
 
-    function makebox(positionx, positiony, positionz){
-            var newbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 0);
-            newbox.position.x = positionx;
-            newbox.position.y = positiony;
-            newbox.position.z = positionz;
-            return newbox;
-    }
+     function makebox(positionx, positiony, positionz, rot){
+        switch (rot) {
+            case 0:
+                var newbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 0);
+                newbox.position.x = positionx;
+                newbox.position.y = positiony;
+                newbox.position.z = positionz;
+                return newbox;
+                break;
+            case 1:
+                var newbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 0);
+                newbox.position.x = -positionz;
+                newbox.position.y = positiony;
+                newbox.position.z = positionx;
+                return newbox;
+                break;
+            case 2:
+                var newbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 0);
+                newbox.position.x = -positionx;
+                newbox.position.y = positiony;
+                newbox.position.z = -positionz;
+                return newbox;
+                break;
+           case 3: 
+                var newbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 0);
+                newbox.position.x = positionz;
+                newbox.position.y = positiony;
+                newbox.position.z = -positionx;
+                return newbox;
+                break;
+            
+        }
+}
  
     
