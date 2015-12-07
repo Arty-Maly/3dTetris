@@ -779,6 +779,8 @@ function Game_World() {
   		}   
   
             requestAnimationFrame(this.render.bind(this));
+            this.renderer.render( sceneCube, cameraCube );
+            this.renderer.autoClear = false;
             this.renderer.render(this.scene, this.camera);
             this.floor.__dirtyRotation = true;
            
@@ -810,6 +812,47 @@ function Game_World() {
 
 
 window.onload = function init() {
+
+//skybox scene starts
+    var paths = ["CloudyLightRays/", "DarkStormy/", "FullMoon/", "SunSet/", "ThickCloudsWater/", "TropicalSunnyDay/"];
+    var randnum = Math.floor((Math.random() * 6));
+    var path = paths[randnum]; //"SwedishRoyalCastle/";
+    var format = '.png';
+    var urls = [
+        path + 'px' + format, path + 'nx' + format,
+        path + 'py' + format, path + 'ny' + format,
+        path + 'pz' + format, path + 'nz' + format
+    ];
+
+    var textureCube = THREE.ImageUtils.loadTextureCube( urls );
+    sceneCube = new THREE.Scene();
+    cameraCube = new THREE.PerspectiveCamera(60, window.innerWidth/ window.innerHeight, 1, 10000);
+
+    var shader = THREE.ShaderLib[ "cube" ];
+    shader.uniforms[ "tCube" ].value = textureCube;
+
+    var material = new THREE.ShaderMaterial( {
+
+        fragmentShader: shader.fragmentShader,
+        vertexShader: shader.vertexShader,
+        uniforms: shader.uniforms,
+        depthWrite: false,
+        side: THREE.BackSide
+    });
+                     
+
+    mesh = new THREE.Mesh( new THREE.BoxGeometry( 1000, 1000, 1000 ), material );
+    sceneCube.add( mesh );
+
+
+//other scene starts
+
+
+
+
+
+
+
 	var rot = 0;
 	game_piece = new Game_Piece();
 
@@ -900,6 +943,7 @@ window.onload = function init() {
 
 		
 		new TWEEN.Tween( world.scene.rotation ).to( {  y:  world.scene.rotation.y + rad90}, 1000 ).start();
+        new TWEEN.Tween( cameraCube.rotation ).to( {  y: cameraCube.rotation.y + rad90}, 1000 ).start();
 		setTimeout(function(){world.pause()},1005);	
 	}
 
