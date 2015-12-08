@@ -1,17 +1,16 @@
 
 
-
 function Game_Piece() {
 
-			this.piece = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 500);
-			this.piece.position.x = 0;
+            this.piece = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), material, 500);
+            this.piece.position.x = 0;
             this.piece.position.y = 10;
             this.piece.position.z = 8;
-    		this.piece.__dirtyRotation=true;
-    		this.piece.__dirtyPosition=true;
+            this.piece.__dirtyRotation=true;
+            this.piece.__dirtyPosition=true;
             this.piece.active = true;
             this.boxgeom = new THREE.BoxGeometry(1, 1, 1);
-            this.mesh = new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: false}, 1.0, 0);
+            this.mesh = material
             this.weight = 500;
             this.invisiblemesh = new THREE.MeshBasicMaterial({transparent: true, opacity: 0}, 1.0, 0);
 
@@ -813,6 +812,44 @@ function Game_World() {
 
 window.onload = function init() {
 
+var vertexShader = document.getElementById('vertexShader').text;
+    var fragmentShader = document.getElementById('fragmentShader').text;
+    var blockImage = THREE.ImageUtils
+                    .loadTexture('blocks.jpg');
+    blockImage.magFilter = THREE.NearestFilter;
+    blockImage.wrapS = THREE.RepeatWrapping;
+    blockImage.wrapT = THREE.RepeatWrapping;
+    uniforms = {
+        ambient: { type: "c", value: new THREE.Color(0xffffff) },
+        diffuse: { type: "c", value: new THREE.Color(0xffffff) },
+        specular: { type: "c", value: new THREE.Color(0xffffff) },
+        shininess: {type:"f",value:100.0, min:0.0, max:1023.0},
+        blinnphong: {type:"f",value:0.0, min:0.0, max:1.0},
+        gtime: {type: "f", value: 10.0},
+        block:{type: "t", value: blockImage},
+        texLevel:{type:"f", min:0.0, max:1.0, value:1},
+        repeatBlocks:{type:"f", min:0.0, max:10.0, value:0.3}
+    };
+    uniforms2 = uniforms;
+    uniforms2 = {texLevel:{type:"f", min:0.0, max:1.0, value:0.5}};
+    material = new THREE.ShaderMaterial(
+            {
+              uniforms : uniforms,
+              vertexShader : vertexShader,
+              fragmentShader : fragmentShader,
+            });
+    material2 = new THREE.ShaderMaterial(
+            {
+              uniforms : uniforms2,
+              vertexShader : vertexShader,
+              fragmentShader : fragmentShader,
+            });
+
+
+
+
+
+
 //skybox scene starts
     var paths = ["CloudyLightRays/", "DarkStormy/", "FullMoon/", "SunSet/", "ThickCloudsWater/", "TropicalSunnyDay/"];
     var randnum = Math.floor((Math.random() * 6));
@@ -831,7 +868,7 @@ window.onload = function init() {
     var shader = THREE.ShaderLib[ "cube" ];
     shader.uniforms[ "tCube" ].value = textureCube;
 
-    var material = new THREE.ShaderMaterial( {
+    var materialskybox = new THREE.ShaderMaterial( {
 
         fragmentShader: shader.fragmentShader,
         vertexShader: shader.vertexShader,
@@ -841,7 +878,7 @@ window.onload = function init() {
     });
                      
 
-    mesh = new THREE.Mesh( new THREE.BoxGeometry( 1000, 1000, 1000 ), material );
+    mesh = new THREE.Mesh( new THREE.BoxGeometry( 1000, 1000, 1000 ), materialskybox );
     sceneCube.add( mesh );
 
 
@@ -1084,28 +1121,28 @@ window.onload = function init() {
      function makebox(positionx, positiony, positionz, rot){
         switch (rot) {
             case 0:
-                var newbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 0);
+                var newbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), material2, 0);
                 newbox.position.x = positionx;
                 newbox.position.y = positiony;
                 newbox.position.z = positionz;
                 return newbox;
                 break;
             case 1:
-                var newbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 0);
+                var newbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), material2, 0);
                 newbox.position.x = -positionz;
                 newbox.position.y = positiony;
                 newbox.position.z = positionx;
                 return newbox;
                 break;
             case 2:
-                var newbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 0);
+                var newbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), material2, 0);
                 newbox.position.x = -positionx;
                 newbox.position.y = positiony;
                 newbox.position.z = -positionz;
                 return newbox;
                 break;
            case 3: 
-                var newbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: 0xff0000}, 1.0, 0), 0);
+                var newbox = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), material2, 0);
                 newbox.position.x = positionz;
                 newbox.position.y = positiony;
                 newbox.position.z = -positionx;
