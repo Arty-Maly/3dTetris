@@ -660,7 +660,15 @@ function Game_World() {
         this.camera.position.z = 40;
         this.camera.lookAt(this.scene.position);
 
-        this.floor = new Physijs.BoxMesh(new THREE.BoxGeometry(20,1,20), new THREE.MeshBasicMaterial({color: 0x000000}), 0);
+        var spotlight = new THREE.SpotLight(0xffffff);
+        spotlight.position.set(0, 10, 0);
+        spotlight.castShadow=true;
+        this.scene.add(spotlight);
+
+        cubeCamera = new THREE.CubeCamera( 1, 100000, 128 );
+        this.scene.add(cubeCamera);
+        var floor_material = new THREE.MeshBasicMaterial( { color: 0xffffff, envMap: cubeCamera.renderTarget } );
+        this.floor = new Physijs.BoxMesh(new THREE.BoxGeometry(20,1,20), floor_material, 0);
 		this.floor.position.x = 0;
         this.floor.position.y = -8;
         this.floor.position.z = 0;
@@ -778,6 +786,15 @@ function Game_World() {
   		}   
   
             requestAnimationFrame(this.render.bind(this));
+
+            cubeCamera.position.copy( this.floor.position );
+            cubeCamera.rotation.copy( this.floor.rotation);
+
+            this.floor.visible=false;
+
+            cubeCamera.updateCubeMap( this.renderer, sceneCube );
+            this.floor.visible=true;
+
             this.renderer.render( sceneCube, cameraCube );
             this.renderer.autoClear = false;
             this.renderer.render(this.scene, this.camera);
@@ -811,6 +828,11 @@ function Game_World() {
 
 
 window.onload = function init() {
+
+
+                
+
+
 
 var vertexShader = document.getElementById('vertexShader').text;
     var fragmentShader = document.getElementById('fragmentShader').text;
